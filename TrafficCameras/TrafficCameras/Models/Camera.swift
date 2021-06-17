@@ -8,13 +8,13 @@
 struct Camera: Decodable {
     let cameraUrl: CameraURL
     let quadrant: String
-    let camaraLocation: String
+    let cameraLocation: String
     let point: Point
 
     enum CodingKeys: String, CodingKey {
         case cameraUrl = "camera_url"
         case quadrant
-        case camaraLocation = "camara_location"
+        case cameraLocation = "camera_location"
         case point
     }
 }

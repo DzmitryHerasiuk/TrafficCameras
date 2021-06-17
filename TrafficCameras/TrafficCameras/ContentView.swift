@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var model = TrafficCamerasViewModel()
+
     var body: some View {
         Text("Hello, world!")
             .font(.footnote)

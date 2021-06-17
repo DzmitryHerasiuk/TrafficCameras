@@ -20,12 +20,17 @@ class TrafficCamerasAPI {
         case get = "GET"
         case post = "POST"
     }
-    private let scheme = "https"
+    enum Scheme: String, HasTitle {
+        case http
+        case https
+    }
+
+    static let shared = TrafficCamerasAPI()
 
     // add queries, if needed
     private func makeRequest(host: Host, path: String, method: Method) -> URLRequest? {
         var component = URLComponents()
-        component.scheme = scheme
+        component.scheme = Scheme.https.title
         component.host = host.title
         component.path = path
         guard let url = component.url else {
@@ -43,21 +48,32 @@ extension TrafficCamerasAPI {
     //https://data.calgary.ca/resource/k7p9-kppz.json
     func fetchCameras() -> AnyPublisher<[Camera], Never> {
         let requestOptional = makeRequest(host: .calgary,
-                                          path: "resource/k7p9-kppz.json",
+                                          path: "/resource/k7p9-kppz.json",
                                           method: .get)
         guard let request = requestOptional else {
             return
                 Just([Camera]())
                 .eraseToAnyPublisher()
         }
+        request.toLog()
         return
             URLSession.shared.dataTaskPublisher(for: request)
-                .map { $0.data }
+                .map {
+                    LogResponse(data: $0.data, response: $0.response).toLog()
+                    return $0.data
+                }
                 .decode(type: [Camera].self, decoder: JSONDecoder())
-                .catch { error in Just([Camera]()) }
+                .catch { error in
+                    return Just([Camera]())
+                }
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
     }
+}
+
+enum AppError: Error {
+    case internalError
+    case backendError
 }
 
 extension HasTitle where Self: RawRepresentable, RawValue == String {
@@ -66,3 +82,96 @@ extension HasTitle where Self: RawRepresentable, RawValue == String {
         return self.rawValue
     }
 }
+
+private struct LogResponse {
+    let data: Data
+    let response: URLResponse
+}
+
+private extension LogResponse {
+
+    func toLog() {
+        let response = self.response as? HTTPURLResponse
+        let path = response?.url?.absoluteString
+        let code = response?.statusCode
+        let body = data.toLog()
+
+        let result = [
+            " [Response ]",
+            " [RespPath   ] \(path.orDash)",
+            " [Code   ] \(code.toString.orDash)",
+            " [Body   ] \(body.orDash)",
+        ]
+        .joined(separator: .newLine)
+        print(Date.now)
+        print(result)
+    }
+}
+
+private extension URLRequest {
+
+    func toLog() {
+        let result = [
+            " [Request ]",
+            " [URL     ] \((url?.absoluteString).orDash)",
+            ]
+        .joined(separator: .newLine)
+        print(Date.now)
+        print(result)
+    }
+}
+
+extension Error {
+
+    func toLog() {
+        print(Date.now)
+        print(self)
+    }
+}
+
+extension Data {
+
+    func toLog() -> String? {
+        guard
+            let object = try? JSONSerialization.jsonObject(with: self, options: []),
+            let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
+            let json = String(data: data, encoding: .utf8)
+        else {
+            return nil
+        }
+        return json
+    }
+}
+
+extension String {
+
+    static var newLine: String {
+        return "\n"
+    }
+
+    static var empty: String {
+        return ""
+    }
+}
+
+private extension Optional where Wrapped == String {
+
+    var orDash: String {
+        return self ?? "---"
+    }
+}
+
+private extension Optional where Wrapped == Int {
+
+    var toString: String? {
+        return self.map { String($0) }
+    }
+}
+
+extension Date {
+
+    static var now: Self {
+        return Date()
+    }
+}
+
