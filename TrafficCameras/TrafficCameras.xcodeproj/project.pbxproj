@@ -13,6 +13,8 @@
 		3C459C97267A90740020E855 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C459C96267A90740020E855 /* Preview Assets.xcassets */; };
 		3C459CA2267A90740020E855 /* TrafficCamerasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C459CA1267A90740020E855 /* TrafficCamerasTests.swift */; };
 		3C459CAD267A90740020E855 /* TrafficCamerasUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C459CAC267A90740020E855 /* TrafficCamerasUITests.swift */; };
+		3C459CBF267B0BA80020E855 /* TrafficCamerasAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C459CBE267B0BA80020E855 /* TrafficCamerasAPI.swift */; };
+		3C459CD0267B0C410020E855 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C459CCF267B0C410020E855 /* Camera.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		3C459CA8267A90740020E855 /* TrafficCamerasUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrafficCamerasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C459CAC267A90740020E855 /* TrafficCamerasUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficCamerasUITests.swift; sourceTree = "<group>"; };
 		3C459CAE267A90740020E855 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3C459CBE267B0BA80020E855 /* TrafficCamerasAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficCamerasAPI.swift; sourceTree = "<group>"; };
+		3C459CCF267B0C410020E855 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 			children = (
 				3C459C8F267A90700020E855 /* TrafficCamerasApp.swift */,
 				3C459C91267A90700020E855 /* ContentView.swift */,
+				3C459CCE267B0C180020E855 /* Models */,
+				3C459CBD267B0B840020E855 /* API */,
 				3C459C93267A90740020E855 /* Assets.xcassets */,
 				3C459C98267A90740020E855 /* Info.plist */,
 				3C459C95267A90740020E855 /* Preview Content */,
@@ -128,6 +134,22 @@
 				3C459CAE267A90740020E855 /* Info.plist */,
 			);
 			path = TrafficCamerasUITests;
+			sourceTree = "<group>";
+		};
+		3C459CBD267B0B840020E855 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				3C459CBE267B0BA80020E855 /* TrafficCamerasAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		3C459CCE267B0C180020E855 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3C459CCF267B0C410020E855 /* Camera.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,8 +281,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C459CD0267B0C410020E855 /* Camera.swift in Sources */,
 				3C459C92267A90700020E855 /* ContentView.swift in Sources */,
 				3C459C90267A90700020E855 /* TrafficCamerasApp.swift in Sources */,
+				3C459CBF267B0BA80020E855 /* TrafficCamerasAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
