@@ -24,17 +24,31 @@ class TrafficCamerasAPI {
         case http
         case https
     }
+    enum QueryKey: String, HasTitle {
+        case order = "$order"
+    }
+
+    // Add sorting direction as associated values
+    enum SortingKey: String {
+        case quadrant
+        case cameraLocation = "camera_location"
+
+        var title: String {
+            self.rawValue
+        }
+    }
 
     static let shared = TrafficCamerasAPI()
 
     private init() { }
 
     // add queries, if needed
-    private func makeRequest(host: Host, path: String, method: Method) -> URLRequest? {
+    private func makeRequest(host: Host, path: String, method: Method, query: [String: String]) -> URLRequest? {
         var component = URLComponents()
         component.scheme = Scheme.https.title
         component.host = host.title
         component.path = path
+        component.queryItems = query.map { URLQueryItem(name: $0.key, value: $0.value) }
         guard let url = component.url else {
             return nil
         }
@@ -49,9 +63,11 @@ extension TrafficCamerasAPI {
     // added processing error if needed
     //https://data.calgary.ca/resource/k7p9-kppz.json
     func fetchCameras() -> AnyPublisher<[CameraDTO], Never> {
+        let sorting: [SortingKey] = [.quadrant, .cameraLocation]
         let requestOptional = makeRequest(host: .calgary,
                                           path: "/resource/k7p9-kppz.json",
-                                          method: .get)
+                                          method: .get,
+                                          query: sorting.toQuery)
         guard let request = requestOptional else {
             return
                 Just([CameraDTO]())
@@ -177,3 +193,10 @@ extension Date {
     }
 }
 
+private extension Array where Element == TrafficCamerasAPI.SortingKey {
+
+    var toQuery: [String: String] {
+        let values = self.map { $0.title }.joined(separator: ",")
+        return [TrafficCamerasAPI.QueryKey.order.title: values]
+    }
+}
