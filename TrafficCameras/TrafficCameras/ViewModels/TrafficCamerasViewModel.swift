@@ -28,3 +28,10 @@ class TrafficCamerasViewModel: ObservableObject {
 
     private var cancellableSet: Set<AnyCancellable> = []
 }
+
+extension TrafficCamerasViewModel {
+
+    var title: String {
+        return "Calgary Traffic"
+    }
+}

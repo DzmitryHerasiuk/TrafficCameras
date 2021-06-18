@@ -11,10 +11,21 @@ struct ContentView: View {
     @ObservedObject var model = TrafficCamerasViewModel(service: TrafficCamerasService())
 
     var body: some View {
-        List(model.cameras) { camera in
-            VStack {
-                Text(camera.cameraLocation)
-                Text(camera.imageURL.absoluteString)
+        VStack {
+            Text(model.title)
+                .font(.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.all)
+                .background(Color.gray)
+            List(model.cameras) { camera in
+                VStack {
+                    Text(camera.cameraLocation)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom)
+                    Text(camera.imageURL.absoluteString)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.top)
             }
         }
     }
