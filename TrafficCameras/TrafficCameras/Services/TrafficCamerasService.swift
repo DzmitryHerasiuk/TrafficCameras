@@ -19,7 +19,8 @@ extension TrafficCamerasService: CanGetCameras {
             api
             .fetchCameras()
             .map { camerasDTO in
-                camerasDTO.map { Camera(dto: $0)}
+                let sortedCameras = camerasDTO.sorted { $0 < $1 }
+                return sortedCameras.map { Camera(dto: $0)}
             }.eraseToAnyPublisher()
     }
 }

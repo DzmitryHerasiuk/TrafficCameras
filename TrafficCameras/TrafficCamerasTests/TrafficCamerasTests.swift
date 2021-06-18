@@ -60,6 +60,9 @@ class TrafficCamerasTests: XCTestCase {
         XCTAssertFalse(cameras.isEmpty)
         XCTAssertTrue(cameras.isSorted(<))
     }
+
+    // TODO: Add sorting testing to the TrafficCamerasViewModel entity
+
 }
 
 private extension Array {
@@ -71,22 +74,5 @@ private extension Array {
             }
         }
         return true
-    }
-}
-
-extension CameraDTO: Comparable {
-
-    public static func == (lhs: CameraDTO, rhs: CameraDTO) -> Bool {
-        return
-            lhs.point.coordinates == rhs.point.coordinates
-    }
-
-    public static func < (lhs: CameraDTO, rhs: CameraDTO) -> Bool {
-        if rhs.quadrant > lhs.quadrant {
-            return true
-        } else if rhs.quadrant == lhs.quadrant && rhs.cameraLocation > lhs.cameraLocation {
-            return true
-        }
-        return false
     }
 }
