@@ -6,28 +6,87 @@
 //
 
 import XCTest
+import Combine
 @testable import TrafficCameras
 
 class TrafficCamerasTests: XCTestCase {
+    private var cancellables: Set<AnyCancellable> = []
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testSorting() {
+        let sortedNumbers = [1, 2, 3]
+        let mixNumbers = [3,2,5]
+        let sortedLetters = ["A", "B", "C"]
+        XCTAssertTrue(sortedNumbers.isSorted(<))
+        XCTAssertFalse(sortedNumbers.isSorted(>))
+        XCTAssertFalse(mixNumbers.isSorted(<))
+        XCTAssertFalse(mixNumbers.isSorted(>))
+        XCTAssertTrue(sortedLetters.isSorted(<))
+        XCTAssertFalse(sortedLetters.isSorted(>))
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testSortigCameraDTOModel() {
+        let camera1 = CameraDTO(cameraUrl: .init(url: "http://trafficcam.calgary.ca/loc70.jpg", description: .empty),
+                                quadrant: "NE",
+                                cameraLocation: "16 Avenue / 19 Street NE",
+                                point: .init(type: PointType.point, coordinates: [-114.0140245, 51.067037300000003]))
+        let camera2 = CameraDTO(cameraUrl: .init(url: "http://trafficcam.calgary.ca/loc38.jpg", description: .empty),
+                                quadrant: "NE",
+                                cameraLocation: "16 Avenue / 36 Street NE",
+                                point: .init(type: PointType.point, coordinates: [-113.98141459999999, 51.066944999999997]))
+        let camera3 = CameraDTO(cameraUrl: .init(url: "http://trafficcam.calgary.ca/loc70.jpg", description: .empty),
+                                quadrant: "NW",
+                                cameraLocation: "16 Avenue / 19 Street NE",
+                                point: .init(type: PointType.point, coordinates: [-114.0140245, 51.067037300000003]))
+        let sortingCameras = [camera1, camera2, camera3]
+        XCTAssertTrue(sortingCameras.isSorted(<))
+        let sortingCamerasBack = [camera3, camera2, camera1]
+        XCTAssertTrue(sortingCamerasBack.isSorted(>))
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testSortinDataFromAPI() {
+        let api = TrafficCamerasAPI.shared
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        var cameras = [CameraDTO]()
+        let expectation = self.expectation(description: "Awaiting cameras")
+
+        api.fetchCameras()
+            .sink { receivedCameras in
+                cameras = receivedCameras
+                expectation.fulfill()
+            }.store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 10)
+
+        XCTAssertFalse(cameras.isEmpty)
+        XCTAssertTrue(cameras.isSorted(<))
+    }
+}
+
+private extension Array {
+
+    func isSorted(_ onOrder: (Element, Element) -> Bool) -> Bool {
+        for i in 1 ..< count {
+            if !onOrder(self[i-1], self[i]) {
+                return false
+            }
         }
+        return true
+    }
+}
+
+extension CameraDTO: Comparable {
+
+    public static func == (lhs: CameraDTO, rhs: CameraDTO) -> Bool {
+        return
+            lhs.point.coordinates == rhs.point.coordinates
     }
 
+    public static func < (lhs: CameraDTO, rhs: CameraDTO) -> Bool {
+        if rhs.quadrant > lhs.quadrant {
+            return true
+        } else if rhs.quadrant == lhs.quadrant && rhs.cameraLocation > lhs.cameraLocation {
+            return true
+        }
+        return false
+    }
 }
