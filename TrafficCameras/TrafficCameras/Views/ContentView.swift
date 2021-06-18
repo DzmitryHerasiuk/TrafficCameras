@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var model = TrafficCamerasViewModel()
+    @ObservedObject var model = TrafficCamerasViewModel(service: TrafficCamerasService())
 
     var body: some View {
-        Text("Hello, world!")
-            .font(.footnote)
-            .foregroundColor(Color.red)
-            .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-
+        List(model.cameras) { camera in
+            VStack {
+                Text(camera.cameraLocation)
+                Text(camera.imageURL.absoluteString)
+            }
+        }
     }
 }
 

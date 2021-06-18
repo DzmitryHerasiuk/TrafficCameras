@@ -27,6 +27,8 @@ class TrafficCamerasAPI {
 
     static let shared = TrafficCamerasAPI()
 
+    private init() { }
+
     // add queries, if needed
     private func makeRequest(host: Host, path: String, method: Method) -> URLRequest? {
         var component = URLComponents()
@@ -46,13 +48,13 @@ extension TrafficCamerasAPI {
 
     // added processing error if needed
     //https://data.calgary.ca/resource/k7p9-kppz.json
-    func fetchCameras() -> AnyPublisher<[Camera], Never> {
+    func fetchCameras() -> AnyPublisher<[CameraDTO], Never> {
         let requestOptional = makeRequest(host: .calgary,
                                           path: "/resource/k7p9-kppz.json",
                                           method: .get)
         guard let request = requestOptional else {
             return
-                Just([Camera]())
+                Just([CameraDTO]())
                 .eraseToAnyPublisher()
         }
         request.toLog()
@@ -62,9 +64,9 @@ extension TrafficCamerasAPI {
                     LogResponse(data: $0.data, response: $0.response).toLog()
                     return $0.data
                 }
-                .decode(type: [Camera].self, decoder: JSONDecoder())
+                .decode(type: [CameraDTO].self, decoder: JSONDecoder())
                 .catch { error in
-                    return Just([Camera]())
+                    return Just([CameraDTO]())
                 }
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()

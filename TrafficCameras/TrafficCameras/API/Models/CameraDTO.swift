@@ -1,11 +1,11 @@
 //
-//  Camera.swift
+//  CameraDTO.swift
 //  TrafficCameras
 //
 //  Created by Dzmitry Herasiuk on 17.06.21.
 //
 
-struct Camera: Decodable {
+struct CameraDTO: Decodable {
     let cameraUrl: CameraURL
     let quadrant: String
     let cameraLocation: String
