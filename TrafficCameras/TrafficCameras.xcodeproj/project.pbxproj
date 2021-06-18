@@ -17,6 +17,7 @@
 		3C459CD0267B0C410020E855 /* CameraDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C459CCF267B0C410020E855 /* CameraDTO.swift */; };
 		3C655BF3267C924C00F50207 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C655BF2267C924C00F50207 /* Model.swift */; };
 		3C655BF9267C929400F50207 /* TrafficCamerasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C655BF8267C929400F50207 /* TrafficCamerasService.swift */; };
+		3C655C01267CE0FF00F50207 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C655C00267CE0FF00F50207 /* AppController.swift */; };
 		3C673494267BF10B0008E232 /* TrafficCamerasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C673493267BF10B0008E232 /* TrafficCamerasViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		3C459CCF267B0C410020E855 /* CameraDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDTO.swift; sourceTree = "<group>"; };
 		3C655BF2267C924C00F50207 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3C655BF8267C929400F50207 /* TrafficCamerasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficCamerasService.swift; sourceTree = "<group>"; };
+		3C655C00267CE0FF00F50207 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		3C673493267BF10B0008E232 /* TrafficCamerasViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrafficCamerasViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				3C655BF8267C929400F50207 /* TrafficCamerasService.swift */,
+				3C655C00267CE0FF00F50207 /* AppController.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				3C459CD0267B0C410020E855 /* CameraDTO.swift in Sources */,
 				3C655BF9267C929400F50207 /* TrafficCamerasService.swift in Sources */,
 				3C459C92267A90700020E855 /* MainView.swift in Sources */,
+				3C655C01267CE0FF00F50207 /* AppController.swift in Sources */,
 				3C673494267BF10B0008E232 /* TrafficCamerasViewModel.swift in Sources */,
 				3C655BF3267C924C00F50207 /* Model.swift in Sources */,
 				3C459C90267A90700020E855 /* TrafficCamerasApp.swift in Sources */,

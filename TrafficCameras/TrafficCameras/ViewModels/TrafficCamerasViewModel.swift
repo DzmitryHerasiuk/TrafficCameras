@@ -13,19 +13,23 @@ protocol CanGetCameras {
 
 class TrafficCamerasViewModel: ObservableObject {
     private let service: CanGetCameras
-    init(service: CanGetCameras) {
+    private let appController: AppController
+    init(service: CanGetCameras, appController: AppController) {
         self.service = service
-        service.getCameras()
-            .assign(to: \.cameras, on: self)
-            .store(in: &cancellableSet)
+        self.appController = appController
+
+        appController.$isActive
+            .sink {isActive in
+                if isActive {
+                    service.getCameras()
+                        .assign(to: \.cameras, on: self)
+                        .store(in: &self.cancellableSet)
+                }
+            }.store(in: &cancellableSet)
     }
 
-    @Published var cameras: [Camera] = [] {
-        didSet {
-            print(cameras)
-        }
-    }
-
+    @Published var cameras: [Camera] = []
+    
     private var cancellableSet: Set<AnyCancellable> = []
 }
 

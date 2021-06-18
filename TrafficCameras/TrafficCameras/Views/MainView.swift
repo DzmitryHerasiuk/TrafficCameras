@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var model = TrafficCamerasViewModel(service: TrafficCamerasService())
+    @ObservedObject var model = TrafficCamerasViewModel(service: TrafficCamerasService(),
+                                                        appController: AppController())
 
     var body: some View {
         VStack {
