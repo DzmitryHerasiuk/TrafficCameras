@@ -11,7 +11,7 @@ import SwiftUI
 struct TrafficCamerasApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }
