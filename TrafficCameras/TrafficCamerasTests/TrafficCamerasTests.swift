@@ -70,6 +70,11 @@ private extension Array {
     func isSorted(_ onOrder: (Element, Element) -> Bool) -> Bool {
         for i in 1 ..< count {
             if !onOrder(self[i-1], self[i]) {
+                print(" ---- false ----")
+                print("previous item:")
+                print(self[i-1])
+                print("next item:")
+                print(self[i])
                 return false
             }
         }
